@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#f8f5ec" />
+  <title>Discover Hawaii | The Ultimate Family Adventure</title>
+  <style>
+    :root {
+      --ocean: #126a78;
+      --ocean-dark: #084b5a;
+      --sky: #e8f5f4;
+      --sand: #f3d37a;
+      --sand-light: #fbf3dc;
+      --ink: #19363a;
+      --muted: #647779;
+      --white: #fff;
+      --shadow: 0 16px 40px rgba(27, 68, 72, .11);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #fffefa;
+      font-family: ui-rounded, "Avenir Next", Avenir, system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: inherit; }
+    img { display: block; width: 100%; object-fit: cover; }
+    button, input { font: inherit; }
+
+    .container { width: min(1120px, calc(100% - 40px)); margin-inline: auto; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--ocean);
+      font-size: .79rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    header {
+      position: absolute;
+      inset: 0 0 auto;
+      z-index: 2;
+      color: white;
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 82px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-size: 1.12rem;
+      font-weight: 850;
+      text-decoration: none;
+    }
+    .brand-mark {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.55);
+      border-radius: 50%;
+      background: rgba(255,255,255,.16);
+      font-size: 1.2rem;
+    }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: rgba(255,255,255,.94);
+      font-size: .92rem;
+      font-weight: 700;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--sand); }
+
+    .hero {
+      position: relative;
+      display: flex;
+      min-height: 690px;
+      align-items: center;
+      overflow: hidden;
+      color: white;
+      background:
+        linear-gradient(90deg, rgba(6,47,58,.78) 0%, rgba(7,61,73,.53) 48%, rgba(7,61,73,.08) 100%),
+        linear-gradient(0deg, rgba(5,42,50,.22), transparent 50%),
+        url("https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&w=2000&q=85") center 55% / cover;
+    }
+    .hero::after {
+      position: absolute;
+      right: -80px;
+      bottom: -155px;
+      width: 420px;
+      height: 280px;
+      border-radius: 50%;
+      background: rgba(243,211,122,.24);
+      content: "";
+      filter: blur(2px);
+    }
+    .hero-content { position: relative; z-index: 1; padding: 125px 0 90px; max-width: 720px; }
+    .hero .eyebrow { color: #ffe69d; }
+    h1 {
+      max-width: 720px;
+      margin: 18px 0;
+      font-size: clamp(2.8rem, 6vw, 5.3rem);
+      line-height: .99;
+      letter-spacing: -.055em;
+    }
+    .hero-copy {
+      max-width: 550px;
+      margin: 22px 0 30px;
+      color: rgba(255,255,255,.9);
+      font-size: clamp(1.05rem, 2vw, 1.22rem);
+    }
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 52px;
+      padding: 0 23px;
+      border: 0;
+      border-radius: 999px;
+      background: var(--sand);
+      color: var(--ink);
+      font-weight: 850;
+      text-decoration: none;
+      transition: transform .2s, box-shadow .2s;
+      box-shadow: 0 8px 22px rgba(0,0,0,.13);
+    }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 12px 26px rgba(0,0,0,.18); }
+    .hero-note {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin-left: 15px;
+      color: white;
+      font-size: .9rem;
+      font-weight: 650;
+    }
+
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 30px;
+      padding: 75px 0 35px;
+    }
+    .intro h2, .section-heading h2 {
+      margin: 8px 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+    .intro p { max-width: 670px; margin: 0; color: var(--muted); }
+    .intro-badge {
+      display: grid;
+      width: 112px;
+      height: 112px;
+      place-items: center;
+      border: 1px solid #f1e4be;
+      border-radius: 50%;
+      background: var(--sand-light);
+      font-size: 2.8rem;
+      transform: rotate(7deg);
+    }
+
+    section { padding: 48px 0 76px; }
+    .section-heading { margin-bottom: 28px; }
+    .section-heading p { max-width: 620px; margin: 0; color: var(--muted); }
+    .island-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .island-card {
+      overflow: hidden;
+      border: 1px solid #edf0e9;
+      border-radius: var(--radius);
+      background: white;
+      box-shadow: var(--shadow);
+      transition: transform .22s;
+    }
+    .island-card:hover { transform: translateY(-5px); }
+    .island-photo { position: relative; height: 220px; }
+    .island-photo img { height: 100%; }
+    .island-number {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--sand);
+      color: var(--ink);
+      font-weight: 900;
+    }
+    .card-body { padding: 20px 21px 22px; }
+    .card-title-line { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .card-title-line h3 { margin: 0; font-size: 1.3rem; }
+    .tag {
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--sky);
+      color: var(--ocean-dark);
+      font-size: .74rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .card-body p { min-height: 52px; margin: 12px 0 16px; color: var(--muted); font-size: .94rem; }
+    .card-meta { display: flex; flex-wrap: wrap; gap: 13px; color: var(--ocean); font-size: .83rem; font-weight: 750; }
+
+    .activities-section { background: var(--sky); }
+    .activity-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+    .activity {
+      min-height: 192px;
+      padding: 22px 19px;
+      border: 1px solid rgba(18,106,120,.08);
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+    }
+    .activity-icon { font-size: 2rem; }
+    .activity h3 { margin: 12px 0 6px; font-size: 1.04rem; }
+    .activity p { margin: 0; color: var(--muted); font-size: .88rem; }
+
+    .pack-layout { display: grid; grid-template-columns: .85fr 1.15fr; align-items: center; gap: 48px; }
+    .pack-art {
+      position: relative;
+      min-height: 390px;
+      overflow: hidden;
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, rgba(7,65,75,.05), rgba(7,65,75,.22)),
+        url("https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=1000&q=85") center / cover;
+    }
+    .pack-sticker {
+      position: absolute;
+      right: 20px;
+      bottom: 20px;
+      max-width: 185px;
+      padding: 15px 17px;
+      border-radius: 15px;
+      background: white;
+      box-shadow: var(--shadow);
+      font-size: .88rem;
+      font-weight: 800;
+      transform: rotate(-3deg);
+    }
+    .pack-sticker span { display: block; margin-bottom: 4px; font-size: 1.35rem; }
+    .checklist {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 11px;
+      margin-top: 23px;
+    }
+    .check-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-height: 56px;
+      padding: 11px 13px;
+      border: 1px solid #e8ece6;
+      border-radius: 13px;
+      background: white;
+      color: #365154;
+      font-size: .91rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background .2s, border .2s;
+    }
+    .check-item:has(input:checked) { border-color: #b8dcd5; background: #eff9f5; }
+    .check-item input { width: 18px; height: 18px; accent-color: var(--ocean); }
+
+    .family-tip {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 25px;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: var(--sand-light);
+    }
+    .family-tip span { font-size: 1.7rem; }
+    .family-tip p { margin: 0; color: #66572e; font-size: .9rem; }
+    .family-tip strong { color: var(--ink); }
+
+    .cta {
+      padding: 56px 20px;
+      border-radius: 28px;
+      background: var(--ocean-dark);
+      color: white;
+      text-align: center;
+    }
+    .cta .eyebrow { color: var(--sand); }
+    .cta h2 { margin: 10px auto; font-size: clamp(2rem, 4vw, 2.8rem); line-height: 1.1; }
+    .cta p { max-width: 520px; margin: 0 auto 22px; color: rgba(255,255,255,.8); }
+    .cta .button { box-shadow: none; }
+    footer { padding: 28px 0; color: var(--muted); font-size: .85rem; text-align: center; }
+
+    @media (max-width: 800px) {
+      .nav-links { gap: 16px; }
+      .island-grid { grid-template-columns: 1fr 1fr; }
+      .island-card:last-child { grid-column: span 2; }
+      .island-card:last-child .island-photo { height: 250px; }
+      .activity-grid { grid-template-columns: repeat(2, 1fr); }
+      .pack-layout { grid-template-columns: 1fr; gap: 30px; }
+      .pack-art { min-height: 300px; }
+    }
+    @media (max-width: 560px) {
+      .container { width: min(100% - 28px, 1120px); }
+      .nav { min-height: 70px; }
+      .brand { font-size: 1rem; }
+      .brand-mark { width: 34px; height: 34px; }
+      .nav-links { gap: 12px; }
+      .nav-links a { font-size: .76rem; }
+      .hero { min-height: 650px; background-position: 58% center; }
+      .hero-content { padding-top: 120px; }
+      h1 { font-size: clamp(2.75rem, 13vw, 4.1rem); }
+      .hero-note { display: flex; margin: 15px 0 0; }
+      .intro { grid-template-columns: 1fr; padding-top: 56px; }
+      .intro-badge { display: none; }
+      section { padding: 38px 0 58px; }
+      .island-grid { grid-template-columns: 1fr; }
+      .island-card:last-child { grid-column: auto; }
+      .island-photo, .island-card:last-child .island-photo { height: 210px; }
+      .activity-grid { gap: 10px; }
+      .activity { min-height: 185px; padding: 17px 14px; }
+      .checklist { grid-template-columns: 1fr; gap: 9px; }
+      .pack-art { min-height: 260px; }
+      .cta { padding: 42px 18px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="nav container" aria-label="Main navigation">
+      <a class="brand" href="#" aria-label="Hawaii Family Adventure home">
+        <span class="brand-mark">🌺</span>
+        Island Daydream
+      </a>
+      <div class="nav-links">
+        <a href="#islands">Islands</a>
+        <a href="#activities">Activities</a>
+        <a href="#packing">Packing list</a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="main-title">
+      <div class="container">
+        <div class="hero-content">
+          <span class="eyebrow">🌴 Aloha, adventure seekers!</span>
+          <h1 id="main-title">Discover Hawaii: The Ultimate Family Adventure!</h1>
+          <p class="hero-copy">
+            Trade ordinary days for golden beaches, friendly sea turtles, and volcano-sized memories.
+            Your family’s island story starts here.
+          </p>
+          <a class="button" href="#islands">Find your island <span aria-hidden="true">→</span></a>
+          <span class="hero-note">☀️ Made for little explorers & big dreamers</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="intro">
+        <div>
+          <span class="eyebrow">Your island-hopping guide</span>
+          <h2>Big adventures. Happy little feet.</h2>
+          <p>
+            Hawaii is a whole world of family fun: splash in gentle waves, spot rainbows in the
+            rainforest, and watch the earth come alive at a volcano. Here are three islands to love.
+          </p>
+        </div>
+        <div class="intro-badge" aria-hidden="true">🐢</div>
+      </div>
+    </div>
+
+    <section id="islands" class="container" aria-labelledby="islands-title">
+      <div class="section-heading">
+        <span class="eyebrow">Pick your paradise</span>
+        <h2 id="islands-title">Top 3 Islands to Visit</h2>
+        <p>Each island has its own kind of magic—choose the one that sounds like your family.</p>
+      </div>
+
+      <div class="island-grid">
+        <article class="island-card">
+          <div class="island-photo">
+            <img src="https://images.unsplash.com/photo-1507876466758-bc54f384809c?auto=format&fit=crop&w=900&q=85"
+                 alt="Palm trees and a tropical Hawaiian coastline" loading="lazy" />
+            <span class="island-number">01</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title-line"><h3>Oʻahu</h3><span class="tag">Best all-rounder</span></div>
+            <p>Beach days, big-city treats, and history make this island an easy family favorite.</p>
+            <div class="card-meta"><span>🏖️ Waikīkī Beach</span><span>🥾 Easy hikes</span></div>
+          </div>
+        </article>
+
+        <article class="island-card">
+          <div class="island-photo">
+            <img src="https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=900&q=85"
+                 alt="A dramatic volcanic landscape under a glowing sky" loading="lazy" />
+            <span class="island-number">02</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title-line"><h3>Hawaiʻi Island</h3><span class="tag">Big nature</span></div>
+            <p>Feel tiny next to lava fields, waterfalls, and the starry skies of the Big Island.</p>
+            <div class="card-meta"><span>🌋 Volcanoes</span><span>✨ Stargazing</span></div>
+          </div>
+        </article>
+
+        <article class="island-card">
+          <div class="island-photo">
+            <img src="https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=900&q=85"
+                 alt="A sunny tropical beach with inviting turquoise water" loading="lazy" />
+            <span class="island-number">03</span>
+          </div>
+          <div class="card-body">
+            <div class="card-title-line"><h3>Maui</h3><span class="tag">Beach bliss</span></div>
+            <p>Slow down for soft-sand beaches, scenic drives, and unforgettable ocean wildlife.</p>
+            <div class="card-meta"><span>🐋 Whale watching</span><span>🌊 Snorkeling</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="activities" class="activities-section" aria-labelledby="activities-title">
+      <div class="container">
+        <div class="section-heading">
+          <span class="eyebrow">Make memories together</span>
+          <h2 id="activities-title">Fun Family Activities</h2>
+          <p>Little adventures that can turn into your family’s favorite stories.</p>
+        </div>
+        <div class="activity-grid">
+          <article class="activity">
+            <span class="activity-icon" aria-hidden="true">🐠</span>
+            <h3>Snorkel & say hello</h3>
+            <p>Explore calm, shallow waters and look for colorful fish.</p>
+          </article>
+          <article class="activity">
+            <span class="activity-icon" aria-hidden="true">🌋</span>
+            <h3>Meet a volcano</h3>
+            <p>Discover dramatic landscapes on a family-friendly park visit.</p>
+          </article>
+          <article class="activity">
+            <span class="activity-icon" aria-hidden="true">🛶</span>
+            <h3>Paddle together</h3>
+            <p>Try a gentle kayak or canoe outing with a local guide.</p>
+          </article>
+          <article class="activity">
+            <span class="activity-icon" aria-hidden="true">🍍</span>
+            <h3>Taste the islands</h3>
+            <p>Share fresh fruit, shave ice, and new favorite snacks.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="packing" class="container" aria-labelledby="packing-title">
+      <div class="pack-layout">
+        <div class="pack-art" role="img" aria-label="A tropical beach—picture your family relaxing here">
+          <div class="pack-sticker"><span>🎒</span>Adventure-ready? Check off your essentials!</div>
+        </div>
+        <div>
+          <span class="eyebrow">Less packing stress, more beach time</span>
+          <h2 id="packing-title">What to Pack</h2>
+          <p style="color: var(--muted); margin: 0;">
+            Keep it light, comfy, and ready for sunshine. Tap an item as it goes in the bag!
+          </p>
+          <div class="checklist" aria-label="Interactive packing checklist">
+            <label class="check-item"><input type="checkbox" /> 🧴 Reef-safe sunscreen</label>
+            <label class="check-item"><input type="checkbox" /> 🩱 Swimsuits & rash guards</label>
+            <label class="check-item"><input type="checkbox" /> 🧢 Sun hats & sunglasses</label>
+            <label class="check-item"><input type="checkbox" /> 🩴 Sandals & water shoes</label>
+            <label class="check-item"><input type="checkbox" /> 💧 Reusable water bottles</label>
+            <label class="check-item"><input type="checkbox" /> 🦟 Bug spray for hikes</label>
+            <label class="check-item"><input type="checkbox" /> 🧥 Light rain jacket</label>
+            <label class="check-item"><input type="checkbox" /> 📷 Camera for memories</label>
+          </div>
+          <div class="family-tip">
+            <span aria-hidden="true">💡</span>
+            <p><strong>Family tip:</strong> Pack a change of clothes in your day bag—spontaneous beach stops happen!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" aria-label="Start planning">
+      <div class="cta">
+        <span class="eyebrow">The islands are calling</span>
+        <h2>Ready for your aloha adventure?</h2>
+        <p>Pick an island, pack your sense of wonder, and get ready to make memories together.</p>
+        <a class="button" href="#islands">Explore the islands <span aria-hidden="true">🌈</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">Made with aloha for curious kids and the grown-ups who adventure with them 🌺</div>
+  </footer>
+</body>
+</html>
